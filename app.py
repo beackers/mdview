@@ -16,9 +16,11 @@ def viewPage():
 		with open(filename) as file:
 			text = file.read()
 	except FileNotFoundError:
-		return 404
+		return jsonify({
+            "text": "filenotfound"
+            }), 404
 	mdText = markdown(text)
-	return jsonify({"file": mdText})
+	return jsonify({"text": mdText})
 
 
 if __name__ == '__main__':

@@ -9,7 +9,7 @@ def view(mdPage):
 	# Define the path to your Markdown fil
 
 	try:
-		page = f"/storage/emulated/0/Documents/foxkids1/{mdPage}.md"
+		page = f"{mdPage}.md"
 		with open(page, 'r', encoding='utf-8') as f:
 			markdown_text = f.read()
 		html_content = markdown.markdown(markdown_text)

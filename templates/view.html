@@ -1,34 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Fox Kids: Rule</title>
+	<title>fox kids: rule</title>
 </head>
 <body>
-	<form action="/" method="post">
-		<input type="text" id="filename" name="filename" placeholder="Filename here...">
-		<button onclick="reload()">Submit/Refresh</button>
-	</form>
-	<div id="markdownText">	
+	<input type="text" id="filename" name="filename" placeholder="filename here...">
+	<button onclick="reload()">submit/refresh</button>
+	<div id="markdowntext">	
 	</div>
 	<script>
-		function reload() {
-			const response = fetch("/view", {
-				method: "POST",
-				headers: {
+		async function reload() {
+  			const filename = document.getElementById("filename").value;
+
+			// Send POST request
+			const response = await fetch("/view", {
+   				method: "POST",
+  				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({filename: document.getElementById("filename").innerHTML})});
-			var mdtext = document.getElementById("markdownText");
-			if (response.ok) {
-				const text = response.json().text;
-				mdtext.innerHTML = text
-			} else {
-				mdtext.innerHTML = "Error fetching file"
-			}
-		};
-	</script>	
+				body: JSON.stringify({ filename })
+			});
 
+			// Debug info
+			alert(`response code: ${response.status}\nresponse.ok: ${response.ok}`);
+
+ 			if (!response.ok) {
+				document.getElementById("markdowntext").innerHTML = "Error loading file.";
+				return;
+			}
+
+ 			 // Parse JSON
+			const data = await response.json();
+
+			// Display text
+			const mdtext = document.getElementById("markdowntext");
+			mdtext.innerHTML = data.text;
+		}
+	</script>
 </body>
 </html>
